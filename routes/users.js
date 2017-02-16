@@ -1,20 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var dblink = require('./db.js');
 
-var connection = mysql.createPool({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: '',
-    database: 'news'
-})
+var connection = mysql.createPool(dblink);
 /* 后台管理页面*/
 //获取所有新闻列表
 router.get('/getnews', function (req, res, next) {
-    connection.query('SELECT * FROM `newslist`', function (err, rows) {
+    connection.query('SELECT * FROM `newslist` order by `newsid` desc', function (err, rows) {
         res.json(rows);
-    })
+    });
 });
 
 //确认更新

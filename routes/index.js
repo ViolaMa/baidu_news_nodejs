@@ -1,18 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var dblink = require('./db.js');
 
 /* 在主页获取新闻时的请求 */
 router.get('/', function (req, res, next) {
     var newstype = req.query.newstype;
 
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: '',
-        database: 'news'
-    });
+    var connection = mysql.createConnection(dblink);
 
     connection.connect();
 

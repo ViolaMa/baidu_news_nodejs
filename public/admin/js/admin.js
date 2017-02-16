@@ -5,36 +5,41 @@ $(function () {
 
     //添加新闻
     $("#btnSubmit").click(function (e) {
-         e.preventDefault();
+        e.preventDefault();
+        var newsTitleInput = $("#newsTitle"),
+            newsTypeSelect = $("#newsType"),
+            newsImgInput = $("#newsImage"),
+            newsTimeInput = $("#newsTime"),
+            newsSrcInput = $("#newsSrc");
         //输入判断
-        if ($("#newsTitle").val() === "" || $("#newsImage").val() === "" || $("#newsTime").val() === "" || $("#newsSrc").val() === "") {
-            if ($("#newsTitle").val() === "") {
-                $("#newsTitle").parent().addClass("has-error");
+        if (newsTitleInput.val() === "" || newsImgInput.val() === "" || newsTimeInput.val() === "" || newsSrcInput.val() === "") {
+            if (newsTitleInput.val() === "") {
+                newsTitleInput.parent().addClass("has-error");
             } else {
-                $("#newsTitle").parent().removeClass("has-error");
+                newsTitleInput.parent().removeClass("has-error");
             }
-            if ($("#newsImage").val() === "") {
-                $("#newsImage").parent().addClass("has-error");
+            if (newsImgInput.val() === "") {
+                newsImgInput.parent().addClass("has-error");
             } else {
-                $("#newsImage").parent().removeClass("has-error");
+                newsImgInput.parent().removeClass("has-error");
             }
-            if ($("#newsTime").val() === "") {
-                $("#newsTime").parent().addClass("has-error");
+            if (newsTimeInput.val() === "") {
+                newsTimeInput.parent().addClass("has-error");
             } else {
-                $("#newsTime").parent().removeClass("has-error");
+                newsTimeInput.parent().removeClass("has-error");
             }
-            if ($("#newsSrc").val() === "") {
-                $("#newsSrc").parent().addClass("has-error");
+            if (newsSrcInput.val() === "") {
+                newsSrcInput.parent().addClass("has-error");
             } else {
-                $("#newsSrc").parent().removeClass("has-error");
+                newsSrcInput.parent().removeClass("has-error");
             }
         } else {
             var jsonNews = {
-                newstitle: $('#newsTitle').val(),
-                newstype: $('#newsType').val(),
-                newsimg: $('#newsImage').val(),
-                newssrc: $('#newsSrc').val(),
-                addtime: $('#newsTime').val()
+                newstitle: newsTitleInput.val(),
+                newstype: newsTypeSelect.val(),
+                newsimg: newsImgInput.val(),
+                newssrc: newsSrcInput.val(),
+                addtime: newsTimeInput.val()
             }
             $.ajax({
                 url: '/admin/insert',
@@ -43,6 +48,11 @@ $(function () {
                 dataType: 'json',
                 success: function (data) {
                     refreshNews();
+                    newsTitleInput.val(""),
+                        newsTypeSelect.val(""),
+                        newsImgInput.val(""),
+                        newsTimeInput.val(""),
+                        newsSrcInput.val("");
                 }
             })
         }
@@ -123,7 +133,8 @@ $(function () {
                     var $tdtype = $("<td>").html(item.newstype);
                     var $tdtitle = $("<td>").html(item.newstitle);
                     var $tdimg = $("<td>").html(item.newsimg);
-                    var $tdtime = $("<td>").html(item.addtime);
+                    var time = moment(item.addtime).format("YYYY-MM-DD");
+                    var $tdtime = $("<td>").html(time);
                     var $tdctrl = $("<td>");
                     var $btnupdate = $("<button>").addClass("btn btn-primary btn-xs btn-update").html("修改");
                     var $btndelete = $("<button>").addClass("btn btn-danger btn-xs").html("删除");
